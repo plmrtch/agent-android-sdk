@@ -60,7 +60,7 @@ public class AgentFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        txtGreeting = getActivity().findViewById(R.id.txtGreeting);
+        /*txtGreeting = getActivity().findViewById(R.id.txtGreeting);
         edtMessageBox = getActivity().findViewById(R.id.edtMessageBox);
         btnSend = getActivity().findViewById(R.id.btnSend);
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +69,7 @@ public class AgentFragment extends Fragment {
                 txtGreeting.setText(edtMessageBox.getText().toString());
                 edtMessageBox.setText("");
             }
-        });
+        });*/
 
     }
 
