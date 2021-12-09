@@ -60,23 +60,25 @@ public class AgentFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        /*txtGreeting = getActivity().findViewById(R.id.txtGreeting);
-        edtMessageBox = getActivity().findViewById(R.id.edtMessageBox);
-        btnSend = getActivity().findViewById(R.id.btnSend);
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                txtGreeting.setText(edtMessageBox.getText().toString());
-                edtMessageBox.setText("");
-            }
-        });*/
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_agent, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_agent, container, false);
+
+        txtGreeting = rootView.findViewById(R.id.txtGreeting);
+        edtMessageBox = rootView.findViewById(R.id.edtMessageBox);
+        btnSend = rootView.findViewById(R.id.btnSend);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                txtGreeting.setText(edtMessageBox.getText().toString());
+                edtMessageBox.setText("");
+            }
+        });
+
+        return rootView;
     }
 }
