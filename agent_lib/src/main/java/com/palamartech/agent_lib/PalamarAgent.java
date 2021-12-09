@@ -41,9 +41,6 @@ public class PalamarAgent {
         handleSSLHandshake();
     }
 
-    /**
-     * Enables https connections
-     */
     @SuppressLint("TrulyRandom")
     public static void handleSSLHandshake() {
         try {
@@ -108,6 +105,10 @@ public class PalamarAgent {
     }
 
     public String talk(String message){
+        if(sessionId == -1){
+            return "Agent is not ready";
+        }
+
         String url = apiUrl + "chat/talk/";
 
         StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
