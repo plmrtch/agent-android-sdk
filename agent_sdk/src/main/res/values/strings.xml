@@ -1,0 +1,6 @@
+<resources>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello this is agent window</string>
+    <string name="messagebox_hint">Write you message here</string>
+    <string name="send">Send</string>
+</resources>
