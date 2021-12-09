@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,9 @@ public class AgentFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView txtGreeting;
+    private EditText edtMessageBox;
+    private Button btnSend;
 
     public AgentFragment() {
         // Required empty public constructor
@@ -53,6 +59,18 @@ public class AgentFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        txtGreeting = getActivity().findViewById(R.id.txtGreeting);
+        edtMessageBox = getActivity().findViewById(R.id.edtMessageBox);
+        btnSend = getActivity().findViewById(R.id.btnSend);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                txtGreeting.setText(edtMessageBox.getText().toString());
+                edtMessageBox.setText("");
+            }
+        });
+
     }
 
     @Override
