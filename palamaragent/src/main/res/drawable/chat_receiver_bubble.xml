@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--ForeGround-->
+
+    <item android:top="5dp" android:bottom="5dp">
+        <shape android:shape="rectangle">
+            <padding
+                android:bottom="15dp"
+                android:left="15dp"
+                android:right="15dp"
+                android:top="15dp"/>
+            <solid android:color="#E3E3E3" />
+            <corners android:bottomLeftRadius="0dp" android:radius="20dp" />
+        </shape>
+    </item>
+
+</layer-list>

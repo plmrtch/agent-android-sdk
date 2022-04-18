@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">ProjectAgent</string>
+    <string name="connect_to_chatbot">Connect To Chatbot</string>
+
+    <!-- CHAT BASE STRINGS -->
+    <string name="chat_base_dummy_title">Chat title will here</string>
+
+    <!-- CHAT BASE DESCRIPTIONS -->
+    <string name="ch_base_desc_more_icon">More Icon</string>
+    <string name="chat_base_close_button">Chat close button</string>
+
+    <!-- CHAT GET INFORMATION STRINGS -->
+    <string name="ch_gi_welcome_message">Sohbete hoş geldiniz! Lütfen sohbete başlamadan önce aşağıdaki formu doldurun.</string>
+    <string name="ch_gi_start_chat">Sohbeti başlat</string>
+    <string name="ch_gi_loading">Lütfen bekleyiniz</string>
+    <string name="ch_gi_incorrect_form_results">Lütfen alanları doğru bir şekilde doldurunuz.</string>
+
+    <!-- CHAT SCENE STRINGS -->
+    <string name="ch_cs_input_hint">Bana IK hakkında sorular sor ...</string>
+    <string name="ch_cs_end_session_title">Sohbeti Sonlandır</string>
+    <string name="ch_cs_end_session_message">Sohbeti sonlandırmak istediğine emin misin?</string>
+    <string name="ch_cs_end_session_confirm">Evet</string>
+    <string name="ch_cs_end_session_cancel">İptal</string>
+    <string name="ch_cs_permission_not_granted">Dosya paylaşma izni sağlanamadı, lütfen ayarlardan ilgili izni veriniz.</string>
+    <string name="ch_cs_send_file">Dosya Gönder</string>
+    <string name="ch_cs_send_file_get_confirm">Aşağıdaki dosyalar yüklenecektir, onaylıyor musun?</string>
+    <string name="ch_cs_send_file_count_limit_exc">3 adetten fazla dosya seçilemez</string>
+    <string name="ch_cs_send_file_no_file">Hiçbir dosya seçilmedi</string>
+
+
+    <!-- TICKET SCENE STRINGS -->
+    <string name="ch_ts_no_agent_message">Şu anda müsait bir operator yok. Sorununuzu bizim için kısaca özetler misiniz?</string>
+    <string name="ch_ts_ticket_message_hint">Açıklama...</string>
+    <string name="ch_ts_open_ticket">Ticket Aç</string>
+    <string name="ch_ts_ticket_successfull">Destek talebiniz başarı ile alınmıştır.</string>
+
+
+</resources>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Fake Toolbar -->
+    <LinearLayout
+        android:id="@+id/llBaseToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+
+        <!-- Bot Logo -->
+        <ImageView
+            android:id="@+id/imgBotLogo"
+            android:src="@drawable/icon_bot"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            />
+
+        <!-- Chat Title -->
+        <TextView
+            android:id="@+id/txtChatTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chat_base_dummy_title"
+            android:textSize="16sp"
+            android:padding="7dp"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            />
+
+        <!-- Close Icon -->
+        <ImageView
+            android:id="@+id/imgCloseBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="10dp"
+            android:src="@drawable/icon_close"
+            android:contentDescription="@string/chat_base_close_button" />
+
+
+    </LinearLayout>
+
+    <!-- Get Information -->
+    <RelativeLayout
+        android:id="@+id/rlGetInfomations"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llBaseToolbar"
+        android:visibility="invisible">
+
+        <!-- Form Area -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+
+            <!-- User Icon -->
+            <RelativeLayout
+                android:id="@+id/rlUserIconContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/item_rounded_corners_bg"
+                android:padding="10dp"
+                android:translationZ="99999dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="5dp"
+                    android:src="@drawable/icon_user" />
+            </RelativeLayout>
+
+            <!-- Form Area Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="40dp"
+                android:background="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="20dp">
+
+                <!-- Form Area Card Layout -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txtWelcomeMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="35dp"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="5dp"
+                        android:text="@string/ch_gi_welcome_message" />
+
+                    <LinearLayout
+                        android:id="@+id/rlFormArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="10dp"/>
+
+                    <Button
+                        android:id="@+id/btnStartChat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/item_start_chat_btn"
+                        android:text="@string/ch_gi_start_chat"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <!-- Footer -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f5"
+            android:paddingVertical="7dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/icon_palamar" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <!-- Chat Scene -->
+    <RelativeLayout
+        android:id="@+id/rlChatScene"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llBaseToolbar"
+        android:background="#FAFAFA"
+        android:visibility="invisible">
+
+        <ScrollView
+            android:id="@+id/svMessagesList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:layout_above="@+id/llChatInputArea">
+
+            <LinearLayout
+                android:id="@+id/llMessagesList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <!--LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                    android:background="@drawable/chat_receiver_bubble">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="asdaaasdasdasdsd"
+                         />
+                </LinearLayout-->
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!-- Chat Input Area -->
+        <LinearLayout
+            android:id="@+id/llChatInputArea"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/item_chat_input_area"
+            android:paddingHorizontal="20dp">
+
+            <EditText
+                android:id="@+id/edtChatInput"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/ch_cs_input_hint"
+                android:padding="0dp"
+                android:singleLine="true" />
+
+            <ImageView
+                android:id="@+id/imgFileSelect"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginVertical="12dp"
+                android:padding="5dp"
+                android:src="@drawable/icon_file" />
+
+            <ImageView
+                android:id="@+id/imgSend"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginVertical="12dp"
+                android:padding="5dp"
+                android:src="@drawable/icon_send" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- Ticket Scene -->
+    <RelativeLayout
+        android:id="@+id/rlTicketScene"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llBaseToolbar"
+        android:visibility="invisible">
+
+        <!-- No Agent Message -->
+        <TextView
+            android:id="@+id/txtNoAgentMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="350dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="75dp"
+            android:textAlignment="center"
+            android:text="@string/ch_ts_no_agent_message" />
+
+        <!-- Get Message For Ticket -->
+        <EditText
+            android:id="@+id/edtTicketInput"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtNoAgentMessage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/item_edit_text_border"
+            android:hint="@string/ch_ts_ticket_message_hint"
+            android:minHeight="120dp"
+            android:padding="15dp"
+            android:singleLine="false" />
+
+        <!-- Open Ticket Button -->
+        <Button
+            android:id="@+id/btnOpenTicket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/item_start_chat_btn"
+            android:text="@string/ch_ts_open_ticket"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_below="@+id/edtTicketInput"
+            android:layout_centerHorizontal="true"
+            android:paddingHorizontal="30dp"
+            />
+
+        <!-- Footer -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f5"
+            android:paddingVertical="7dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/icon_palamar" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
