@@ -3,15 +3,11 @@ package com.palamartech.palamaragent;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -30,6 +26,7 @@ import android.provider.OpenableColumns;
 import android.text.InputType;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -173,26 +170,6 @@ public class ChatActivity extends AppCompatActivity {
                             public void run() {
                                 try {
                                     String data = payload.getString("data");
-
-                                    //region SHOW NOTIFICATION IF APP IN BACKGROUND
-                                    if(isAppBackground(getApplicationContext())){
-                                        Intent notificationIntent = new Intent(getApplicationContext(), ChatActivity.class);
-                                        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                                        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-                                        NotificationCompat.Builder builder = new NotificationCompat.Builder(ChatActivity.this, "My Notification");
-                                        builder.setContentTitle("Yeni Mesaj");
-                                        builder.setContentText(data);
-                                        builder.setSmallIcon(R.drawable.icon_bot);
-                                        builder.setAutoCancel(false);
-                                        builder.setContentIntent(contentIntent);
-
-                                        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(ChatActivity.this);
-                                        managerCompat.notify(1, builder.build());
-                                    }
-                                    //endregion
 
                                     //region MESSAGE ITEM
                                     RelativeLayout rlMessage = new RelativeLayout(getApplicationContext());
@@ -529,16 +506,15 @@ public class ChatActivity extends AppCompatActivity {
     //endregion
 
     //region CHAT BASE CONSTANTS
-    private static final String PROJECT_TOKEN = "eecb254a-23ac-4a8d-88db-8a8d9dbdc053";
+    private static String PROJECT_TOKEN = "";
     private static String SESSION_TOKEN = "";
     private static final String API_BASE_URL = "https://techin.thyteknik.com.tr/api";
     private static final String SOCKET_URL = "wss://techin.thyteknik.com.tr/ws/customer/";
 
     //region STYLE CONSTANTS
-    private static final String PRIMARY_COLOR = "#144FFF";
+    private static String PRIMARY_COLOR = "";
     private static final String TEXT_COLOR = "#212529";
     private static final float TEXT_SIZE = 18;
-    private static final int DEFAULT_CHAT_BOX_MARGINS = 5;
     //endregion
 
     //endregion
@@ -578,22 +554,40 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //region FOR FULL SCREEN
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //endregion
         setContentView(R.layout.activity_chat);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("My Notification", "My Notification", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
+        //region CHECK PROJECT TOKEN
+        String projectToken = getIntent().getStringExtra("projectToken");
+        if(projectToken != null){
+            PROJECT_TOKEN = projectToken;
         }
+        else{
+            Log.e("PalmateChatError", "You must provide a project token with setIntentExtra");
+            onBackPressed();
+        }
+        //endregion
+
+        //region CHECK PRIMARY COLOR
+        String primaryColor = getIntent().getStringExtra("primaryColor");
+        if(primaryColor != null){
+            PRIMARY_COLOR = primaryColor;
+        }
+        else{
+            PRIMARY_COLOR = "#144FFF";
+        }
+        //endregion
+
+        String customerData = getIntent().getStringExtra("customerData");
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         handleSSLHandshake();
 
         initUI();
 
-        String customerData = getIntent().getStringExtra("customerData");
         if(customerData != null){
             try {
                 JSONObject startSessionBody = new JSONObject();
