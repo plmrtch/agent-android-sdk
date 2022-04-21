@@ -3,7 +3,9 @@
     <string name="connect_to_chatbot">Connect To Chatbot</string>
 
     <!-- CHAT BASE STRINGS -->
-    <string name="chat_base_dummy_title">Chat title will here</string>
+    <string name="chat_base_dummy_title">Chat Başlık</string>
+    <string name="chat_base_permission_error">Lütfen dosya paylaşmak için istenen izni verin!</string>
+    <string name="chat_base_new_session_error">Yeni oturum oluştururken bir hata oluştu.</string>
 
     <!-- CHAT BASE DESCRIPTIONS -->
     <string name="ch_base_desc_more_icon">More Icon</string>

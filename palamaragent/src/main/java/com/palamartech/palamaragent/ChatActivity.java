@@ -474,12 +474,6 @@ public class ChatActivity extends AppCompatActivity {
 
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getApplicationContext(), "SOCKET MESSAGE", Toast.LENGTH_SHORT).show();
-                }
-            });
         }
 
         @Override
@@ -492,7 +486,7 @@ public class ChatActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "SOCKET FAIL", Toast.LENGTH_SHORT).show();
+                    Log.e("PalmateChatError", "Socket connection failed");
                 }
             });
         }
@@ -554,10 +548,6 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //region FOR FULL SCREEN
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //endregion
         setContentView(R.layout.activity_chat);
 
         //region CHECK PROJECT TOKEN
@@ -566,7 +556,7 @@ public class ChatActivity extends AppCompatActivity {
             PROJECT_TOKEN = projectToken;
         }
         else{
-            Log.e("PalmateChatError", "You must provide a project token with setIntentExtra");
+            Log.e("PalmateChatError", "You must provide a PROJECT TOKEN with putExtra");
             onBackPressed();
         }
         //endregion
@@ -747,7 +737,7 @@ public class ChatActivity extends AppCompatActivity {
                     try {
                         askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 1);
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "NO IDEA", Toast.LENGTH_SHORT).show();
+                        Log.e("PalmateChatError", "Exception about permissions");
                         e.printStackTrace();
                     }
                 }
@@ -862,8 +852,8 @@ public class ChatActivity extends AppCompatActivity {
     private void askForPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), permission)
                 != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(ChatActivity.this, permission)) {
-                Toast.makeText(getApplicationContext(), "Please grant the requested permission to get your task done!", Toast.LENGTH_LONG).show();
+            if(ActivityCompat.shouldShowRequestPermissionRationale(ChatActivity.this, permission)) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.chat_base_permission_error), Toast.LENGTH_LONG).show();
                 ActivityCompat.requestPermissions(ChatActivity.this, new String[]{permission}, requestCode);
             } else {
                 ActivityCompat.requestPermissions(ChatActivity.this, new String[]{permission}, requestCode);
@@ -1151,7 +1141,7 @@ public class ChatActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error while getting project settings, contact system admin.", Toast.LENGTH_SHORT).show();
+                Log.e("PalmateChatError", "Error while getting project settings, contact system admin.");
                 finish();
             }
         });
@@ -1204,7 +1194,8 @@ public class ChatActivity extends AppCompatActivity {
                     snackbar.show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Error while creating new session", Toast.LENGTH_SHORT).show();
+                    Log.e("PalmateChatError", "Error while creating new session");
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.chat_base_new_session_error), Toast.LENGTH_SHORT).show();
                 }
             }
         });
