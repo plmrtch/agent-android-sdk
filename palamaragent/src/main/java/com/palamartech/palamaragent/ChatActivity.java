@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -502,8 +503,8 @@ public class ChatActivity extends AppCompatActivity {
     //region CHAT BASE CONSTANTS
     private static String PROJECT_TOKEN = "";
     private static String SESSION_TOKEN = "";
-    private static final String API_BASE_URL = "https://techin.thyteknik.com.tr/api";
-    private static final String SOCKET_URL = "wss://techin.thyteknik.com.tr/ws/customer/";
+    private static final String API_BASE_URL = "https://sense.palamar.com.tr/api";
+    private static final String SOCKET_URL = "wss://sense.palamar.com.tr/ws/customer/";
 
     //region STYLE CONSTANTS
     private static String PRIMARY_COLOR = "";
@@ -526,6 +527,7 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayout rlFormArea;
     private RelativeLayout rlGetInfomations;
     private Button btnStartChat;
+    private ProgressBar pbFormLoading;
     //endregion
 
     //region CHAT SCENE
@@ -677,6 +679,7 @@ public class ChatActivity extends AppCompatActivity {
         //region GET INFORMATION
         rlGetInfomations = findViewById(R.id.rlGetInfomations);
         rlFormArea = findViewById(R.id.rlFormArea);
+        pbFormLoading = findViewById(R.id.pbFormLoading);
 
 
         //region SET COLORS OF USER ICON
@@ -1048,6 +1051,8 @@ public class ChatActivity extends AppCompatActivity {
         StringRequest sr = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                rlFormArea.removeView(pbFormLoading);
+
                 try {
                     //region CONVERT TO JSON
                     String str = "";

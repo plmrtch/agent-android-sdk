@@ -3,7 +3,7 @@
     <string name="connect_to_chatbot">Connect To Chatbot</string>
 
     <!-- CHAT BASE STRINGS -->
-    <string name="chat_base_dummy_title">Chat Başlık</string>
+    <string name="chat_base_dummy_title">PalmateAI</string>
     <string name="chat_base_permission_error">Lütfen dosya paylaşmak için istenen izni verin!</string>
     <string name="chat_base_new_session_error">Yeni oturum oluştururken bir hata oluştu.</string>
 
@@ -18,7 +18,7 @@
     <string name="ch_gi_incorrect_form_results">Lütfen alanları doğru bir şekilde doldurunuz.</string>
 
     <!-- CHAT SCENE STRINGS -->
-    <string name="ch_cs_input_hint">Bana IK hakkında sorular sor ...</string>
+    <string name="ch_cs_input_hint">Bana soru sor ...</string>
     <string name="ch_cs_end_session_title">Sohbeti Sonlandır</string>
     <string name="ch_cs_end_session_message">Sohbeti sonlandırmak istediğine emin misin?</string>
     <string name="ch_cs_end_session_confirm">Evet</string>

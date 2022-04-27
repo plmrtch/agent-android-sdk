@@ -114,7 +114,14 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingHorizontal="15dp"
-                        android:paddingVertical="10dp"/>
+                        android:paddingVertical="10dp">
+
+                        <ProgressBar
+                            android:id="@+id/pbFormLoading"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"/>
+
+                    </LinearLayout>
 
                     <Button
                         android:id="@+id/btnStartChat"
