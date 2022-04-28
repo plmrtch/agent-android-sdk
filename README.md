@@ -63,3 +63,24 @@ After this button click, your customers will see screen as below:
 ### 3.1 Starting Chat Activity with credentials
 
 If you already know the information that the user will enter in the mobile application and you do not want to re-enter the user in concern of UX, you can start the conversation with these credentials as follows.
+```
+btnStartChat.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(MainActivity.this, com.palamartech.palamaragent.ChatActivity.class);
+        intent.putExtra("projectToken", PROJECT_TOKEN_HERE);
+
+        JSONObject customerData = new JSONObject();
+        try {
+            customerData.put("data1", "DATA_1");
+            customerData.put("data2", "DATA_2");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("customerData", customerData.toString());
+
+        startActivity(intent);
+    }
+});
+
+```
