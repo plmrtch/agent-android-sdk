@@ -545,13 +545,13 @@ public class ChatActivity extends AppCompatActivity {
     //endregion
 
     //region CHAT BASE CONSTANTS
-    private static final String PROJECT_TOKEN = "58202a17-8ff1-4eed-a8d9-32451e3da40d";
+    private static final String PROJECT_TOKEN = "";
     private static String SESSION_TOKEN = "";
     private static final String API_BASE_URL = "https://sensepublic.palamar.com.tr/api";
     private static final String SOCKET_URL = "wss://sensepublic.palamar.com.tr/ws/customerV2/";
 
     //region STYLE CONSTANTS
-    private static final String PRIMARY_COLOR = "#7856AF";
+    private static final String PRIMARY_COLOR = "#144fff";
     private static final String TEXT_COLOR = "#212529";
     private static final float TEXT_SIZE = 18;
     private static final int DEFAULT_CHAT_BOX_MARGINS = 5;
