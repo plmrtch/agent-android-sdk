@@ -1,13 +1,18 @@
 package com.palamartech.palamaragent;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -122,7 +127,30 @@ public class ChatActivity extends AppCompatActivity {
                             });
                         }
                     }
-                    else if(payload.getString("type").equals("customer_session_end")){
+                    else if(payload.getString("type").equals("queue_status")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                rlChatScene.setVisibility(View.INVISIBLE);
+                                rlQueueScene.setVisibility(View.VISIBLE);
+                                try {
+                                    txtQueueMsg.setText("Bekleyenler arasında "+payload.getString("order")+". sıradasınız");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                    else if(payload.getString("action_type").equals("connect")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                rlQueueScene.setVisibility(View.INVISIBLE);
+                                rlChatScene.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                    else if(payload.getString("action_type").equals("customer_session_end")){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -130,20 +158,18 @@ public class ChatActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    else if(payload.getString("type").equals("agent_status")){
-                        if(payload.getInt("online_agent") == 0){
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    rlGetInfomations.setVisibility(View.INVISIBLE);
-                                    rlChatScene.setVisibility(View.INVISIBLE);
+                    else if(payload.getString("action_type").equals("direct_to_ticket")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                rlGetInfomations.setVisibility(View.INVISIBLE);
+                                rlChatScene.setVisibility(View.INVISIBLE);
 
-                                    rlTicketScene.setVisibility(View.VISIBLE);
-                                }
-                            });
-                        }
+                                rlTicketScene.setVisibility(View.VISIBLE);
+                            }
+                        });
                     }
-                    else if(payload.getString("type").equals("ticket_saved")){
+                    else if(payload.getString("action_type").equals("ticket_saved")){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -151,15 +177,9 @@ public class ChatActivity extends AppCompatActivity {
                                 rlTicketScene.setVisibility(View.INVISIBLE);
                                 rlGetInfomations.setVisibility(View.VISIBLE);
 
-                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.ch_ts_ticket_successfull), Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.ch_ts_ticket_successfull), Toast.LENGTH_LONG).show();
 
-                                    }
-                                });
-                                snackbar.setActionTextColor(getResources().getColor(R.color.holo_green_dark));
-                                snackbar.show();
-
+                                finish();
                             }
                         });
                     }
@@ -171,6 +191,26 @@ public class ChatActivity extends AppCompatActivity {
                             public void run() {
                                 try {
                                     String data = payload.getString("data");
+
+                                    //region SHOW NOTIFICATION IF APP IN BACKGROUND
+                                    if(isAppBackground(getApplicationContext())){
+                                        Intent notificationIntent = new Intent(getApplicationContext(), ChatActivity.class);
+                                        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                                        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                                        NotificationCompat.Builder builder = new NotificationCompat.Builder(ChatActivity.this, "My Notification");
+                                        builder.setContentTitle("Yeni Mesaj");
+                                        builder.setContentText(data);
+                                        builder.setSmallIcon(R.drawable.icon_bot);
+                                        builder.setAutoCancel(false);
+                                        builder.setContentIntent(contentIntent);
+
+                                        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(ChatActivity.this);
+                                        managerCompat.notify(1, builder.build());
+                                    }
+                                    //endregion
 
                                     //region MESSAGE ITEM
                                     RelativeLayout rlMessage = new RelativeLayout(getApplicationContext());
@@ -475,6 +515,11 @@ public class ChatActivity extends AppCompatActivity {
 
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                }
+            });
         }
 
         @Override
@@ -487,7 +532,6 @@ public class ChatActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e("PalmateChatError", "Socket connection failed");
                 }
             });
         }
@@ -501,15 +545,16 @@ public class ChatActivity extends AppCompatActivity {
     //endregion
 
     //region CHAT BASE CONSTANTS
-    private static String PROJECT_TOKEN = "";
+    private static final String PROJECT_TOKEN = "58202a17-8ff1-4eed-a8d9-32451e3da40d";
     private static String SESSION_TOKEN = "";
-    private static final String API_BASE_URL = "https://sense.palamar.com.tr/api";
-    private static final String SOCKET_URL = "wss://sense.palamar.com.tr/ws/customer/";
+    private static final String API_BASE_URL = "https://sensepublic.palamar.com.tr/api";
+    private static final String SOCKET_URL = "wss://sensepublic.palamar.com.tr/ws/customerV2/";
 
     //region STYLE CONSTANTS
-    private static String PRIMARY_COLOR = "";
+    private static final String PRIMARY_COLOR = "#7856AF";
     private static final String TEXT_COLOR = "#212529";
     private static final float TEXT_SIZE = 18;
+    private static final int DEFAULT_CHAT_BOX_MARGINS = 5;
     //endregion
 
     //endregion
@@ -545,6 +590,11 @@ public class ChatActivity extends AppCompatActivity {
     private Button btnOpenTicket;
     //endregion
 
+    //region QUEUE SCENE
+    private RelativeLayout rlQueueScene;
+    private TextView txtQueueMsg;
+    //endregion
+
     //endregion
 
     @Override
@@ -552,34 +602,18 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        //region CHECK PROJECT TOKEN
-        String projectToken = getIntent().getStringExtra("projectToken");
-        if(projectToken != null){
-            PROJECT_TOKEN = projectToken;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("My Notification", "My Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
         }
-        else{
-            Log.e("PalmateChatError", "You must provide a PROJECT TOKEN with putExtra");
-            onBackPressed();
-        }
-        //endregion
-
-        //region CHECK PRIMARY COLOR
-        String primaryColor = getIntent().getStringExtra("primaryColor");
-        if(primaryColor != null){
-            PRIMARY_COLOR = primaryColor;
-        }
-        else{
-            PRIMARY_COLOR = "#144FFF";
-        }
-        //endregion
-
-        String customerData = getIntent().getStringExtra("customerData");
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         handleSSLHandshake();
 
         initUI();
 
+        String customerData = getIntent().getStringExtra("customerData");
         if(customerData != null){
             try {
                 JSONObject startSessionBody = new JSONObject();
@@ -598,6 +632,7 @@ public class ChatActivity extends AppCompatActivity {
         else{
             rlGetInfomations.setVisibility(View.VISIBLE);
         }
+
     }
 
     //region GENERAL COMPONENT HELPERS
@@ -739,7 +774,6 @@ public class ChatActivity extends AppCompatActivity {
                     try {
                         askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 1);
                     } catch (Exception e) {
-                        Log.e("PalmateChatError", "Exception about permissions");
                         e.printStackTrace();
                     }
                 }
@@ -784,6 +818,11 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+        //endregion
+
+        //region QUEUE SCENE
+        rlQueueScene = findViewById(R.id.rlQueueScene);
+        txtQueueMsg = findViewById(R.id.txtQueueMsg);
         //endregion
 
         getProjectSettings();
@@ -854,8 +893,8 @@ public class ChatActivity extends AppCompatActivity {
     private void askForPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), permission)
                 != PackageManager.PERMISSION_GRANTED) {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(ChatActivity.this, permission)) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.chat_base_permission_error), Toast.LENGTH_LONG).show();
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ChatActivity.this, permission)) {
+                Toast.makeText(getApplicationContext(), "Please grant the requested permission to get your task done!", Toast.LENGTH_LONG).show();
                 ActivityCompat.requestPermissions(ChatActivity.this, new String[]{permission}, requestCode);
             } else {
                 ActivityCompat.requestPermissions(ChatActivity.this, new String[]{permission}, requestCode);
@@ -1048,11 +1087,13 @@ public class ChatActivity extends AppCompatActivity {
         String url = API_BASE_URL + "/project_model/welcome_form/?token=" + PROJECT_TOKEN;
 
         StringRequest sr = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onResponse(String response) {
-                try {
-                    rlFormArea.removeView(pbFormLoading);
 
+                rlFormArea.removeView(pbFormLoading);
+
+                try {
                     //region CONVERT TO JSON
                     String str = "";
                     try {
@@ -1145,7 +1186,7 @@ public class ChatActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("PalmateChatError", "Error while getting project settings, contact system admin.");
+                Toast.makeText(getApplicationContext(), "Error while getting project settings, contact system admin.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -1198,8 +1239,7 @@ public class ChatActivity extends AppCompatActivity {
                     snackbar.show();
                 }
                 else{
-                    Log.e("PalmateChatError", "Error while creating new session");
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.chat_base_new_session_error), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error while creating new session", Toast.LENGTH_SHORT).show();
                 }
             }
         });
