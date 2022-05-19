@@ -545,7 +545,7 @@ public class ChatActivity extends AppCompatActivity {
     //endregion
 
     //region CHAT BASE CONSTANTS
-    private static final String PROJECT_TOKEN = "";
+    private static String PROJECT_TOKEN = "";
     private static String SESSION_TOKEN = "";
     private static final String API_BASE_URL = "https://sensepublic.palamar.com.tr/api";
     private static final String SOCKET_URL = "wss://sensepublic.palamar.com.tr/ws/customerV2/";
@@ -614,6 +614,10 @@ public class ChatActivity extends AppCompatActivity {
         initUI();
 
         String customerData = getIntent().getStringExtra("customerData");
+        String projectToken = getIntent().getStringExtra("projectToken");
+        if(projectToken != null){
+            PROJECT_TOKEN = projectToken;
+        }
         if(customerData != null){
             try {
                 JSONObject startSessionBody = new JSONObject();
