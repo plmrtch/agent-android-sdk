@@ -11,7 +11,7 @@ It is an SDK developed to implement [Palmate.ai](http://palmate.ai/) on native A
 You need to add this line on your `build.gradle` file at module level in `dependencies` section
 
 ```
-implementation 'com.github.plmrtch:agent-android-sdk:1.0.5'
+implementation 'com.github.plmrtch:agent-android-sdk:1.0.6'
 
 ```
 
