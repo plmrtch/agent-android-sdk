@@ -611,13 +611,14 @@ public class ChatActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         handleSSLHandshake();
 
-        initUI();
-
         String customerData = getIntent().getStringExtra("customerData");
         String projectToken = getIntent().getStringExtra("projectToken");
         if(projectToken != null){
             PROJECT_TOKEN = projectToken;
         }
+        
+        initUI();
+        
         if(customerData != null){
             try {
                 JSONObject startSessionBody = new JSONObject();
