@@ -547,8 +547,8 @@ public class ChatActivity extends AppCompatActivity {
     //region CHAT BASE CONSTANTS
     private static String PROJECT_TOKEN = "";
     private static String SESSION_TOKEN = "";
-    private static final String API_BASE_URL = "http://palmate.palamar.com.tr/api";
-    private static final String SOCKET_URL = "ws://palmate.palamar.com.tr/ws/customerV2/";
+    private static final String API_BASE_URL = "https://palmate.palamar.com.tr/api";
+    private static final String SOCKET_URL = "wss://palmate.palamar.com.tr/ws/customerV2/";
 
     //region STYLE CONSTANTS
     private static final String PRIMARY_COLOR = "#144fff";
